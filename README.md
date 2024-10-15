@@ -18,4 +18,6 @@ npm run dev
 
 ## Learn More
 
-https://docs.zkverify.io/
+Get Started: [zkVerify](https://docs.zkverify.io)
+
+NPM Package: [zkVerifyJS](https://www.npmjs.com/package/zkverifyjs)
