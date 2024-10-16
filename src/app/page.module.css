@@ -88,3 +88,26 @@
   font-size: 1.2rem;
   margin-bottom: 1rem;
 }
+
+.transactionDetails {
+  margin-top: 20px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  font-family: 'Arial', sans-serif;
+}
+
+.transactionDetails p {
+  margin: 8px 0;
+  font-size: 14px;
+  color: #333;
+}
+
+.transactionDetails p span {
+  font-weight: bold;
+}
+
+.transactionDetails p:last-child {
+  margin-bottom: 0;
+}

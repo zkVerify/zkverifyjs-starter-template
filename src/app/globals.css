@@ -74,7 +74,7 @@ a {
   animation: spin 1s linear infinite;
   position: absolute;
   right: 1rem;
-  top: 50%;
+  top: 35%;
   transform: translateY(-50%);
 }
 

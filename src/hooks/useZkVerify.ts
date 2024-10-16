@@ -1,47 +1,60 @@
+import { useState } from 'react';
+
 export function useZkVerify() {
+    const [status, setStatus] = useState<string | null>(null);
+    const [eventData, setEventData] = useState<any>(null);
+    const [transactionResult, setTransactionResult] = useState<any>(null);
+    const [error, setError] = useState<string | null>(null);
+
     const onVerifyProof = async (
         proof: string,
         publicSignals: any,
         vk: any
-    ): Promise<{ verified: boolean; error?: string; cancelled?: boolean; proofType?: string; txHash?: string; blockHash?: string }> => {
+    ): Promise<void> => {
         try {
             if (!proof || !publicSignals || !vk) {
                 throw new Error('Proof, public signals, or verification key is missing');
             }
 
             const proofData = proof;
-
             const { zkVerifySession } = await import('zkverifyjs');
-
             const session = await zkVerifySession.start().Testnet().withWallet();
-            // Using risc0 proof here
-            const { transactionResult } = await session.verify().risc0().execute(proofData, publicSignals, vk);
+
+            setStatus('verifying');
+            setError(null);
+            setTransactionResult(null);
+
+            const { events, transactionResult } = await session.verify().risc0().execute(proofData, publicSignals, vk);
+
+            events.on('includedInBlock', (data: any) => {
+                setStatus('includedInBlock');
+                setEventData(data);
+            });
 
             let transactionInfo = null;
             try {
                 transactionInfo = await transactionResult;
+                setTransactionResult(transactionInfo);
             } catch (error: unknown) {
                 if ((error as Error).message.includes('Rejected by user')) {
-                    return { verified: false, error: 'Transaction Rejected By User.' };
+                    setError('Transaction Rejected By User.');
+                    setStatus('cancelled');
+                    return;
                 }
                 throw new Error(`Transaction failed: ${(error as Error).message}`);
             }
 
             if (transactionInfo && transactionInfo.attestationId) {
-                return {
-                    verified: true,
-                    proofType: transactionInfo.proofType,
-                    txHash: transactionInfo.txHash,
-                    blockHash: transactionInfo.blockHash,
-                };
+                setStatus('verified');
             } else {
                 throw new Error("Your proof isn't correct.");
             }
         } catch (error: unknown) {
             const errorMessage = (error as Error).message;
-            return { verified: false, error: errorMessage };
+            setError(errorMessage);
+            setStatus('error');
         }
     };
 
-    return { onVerifyProof };
+    return { status, eventData, transactionResult, error, onVerifyProof };
 }
