@@ -12,12 +12,12 @@ export default function Home() {
   const [verificationResult, setVerificationResult] = useState<string | null>(null);
   const [blockHash, setBlockHash] = useState<string | null>(null);
   const walletButtonRef = useRef<ConnectWalletButtonHandle | null>(null);
-  const { selectedAccount } = useAccount();
+  const { selectedAccount, selectedWallet } = useAccount();
   const { onVerifyProof, status, eventData, transactionResult, error } = useZkVerify();
 
   const handleSubmit = async () => {
-    if (!selectedAccount) {
-      setVerificationResult('Please connect a wallet.');
+    if (!selectedAccount || !selectedWallet) {
+      setVerificationResult('Please connect a wallet and select an account.');
       return;
     }
 
@@ -70,7 +70,7 @@ export default function Home() {
           <button
               onClick={handleSubmit}
               className={`button ${styles.verifyButton}`}
-              disabled={!selectedAccount || loading}
+              disabled={!selectedAccount || !selectedWallet || loading}
           >
             {loading ? (
                 <>

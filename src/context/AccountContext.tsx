@@ -3,19 +3,22 @@ import React, { createContext, useContext, useState, ReactNode, FC } from 'react
 
 interface AccountContextType {
     selectedAccount: string | null;
+    selectedWallet: string | null;
     setSelectedAccount: React.Dispatch<React.SetStateAction<string | null>>;
+    setSelectedWallet: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
 export const AccountContext = createContext<AccountContextType | undefined>(undefined);
 
 export const AccountProvider: FC<{ children: ReactNode }> = ({ children }) => {
     const [selectedAccount, setSelectedAccount] = useState<string | null>(null);
+    const [selectedWallet, setSelectedWallet] = useState<string | null>(null);
 
     return (
-        <AccountContext.Provider value={{ selectedAccount, setSelectedAccount }}>
-    {children}
-    </AccountContext.Provider>
-);
+        <AccountContext.Provider value={{ selectedAccount, setSelectedAccount, selectedWallet, setSelectedWallet }}>
+            {children}
+        </AccountContext.Provider>
+    );
 };
 
 export const useAccount = () => {
