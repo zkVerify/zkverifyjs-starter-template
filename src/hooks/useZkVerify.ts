@@ -33,7 +33,13 @@ export function useZkVerify() {
             setError(null);
             setTransactionResult(null);
 
-            const { events, transactionResult } = await session.verify().risc0().execute(proofData, publicSignals, vk);
+            const { events, transactionResult } = await session.verify().risc0().execute({
+                proofData: {
+                    proof: proofData,
+                    publicSignals: publicSignals,
+                    vk: vk
+                }
+            });
 
             events.on('includedInBlock', (data: any) => {
                 setStatus('includedInBlock');
