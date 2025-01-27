@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useAccount } from '@/context/AccountContext';
-import {Library} from "zkverifyjs";
 
 export function useZkVerify() {
     const { selectedAccount, selectedWallet } = useAccount();
@@ -34,7 +33,7 @@ export function useZkVerify() {
             setError(null);
             setTransactionResult(null);
 
-            const { events, transactionResult } = await session.verify().risc0().execute({
+            const { events, transactionResult } = await session.verify().risc0.execute({
                 proofData: {
                     proof: proofData,
                     publicSignals: publicSignals,
