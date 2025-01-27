@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useAccount } from '@/context/AccountContext';
+import {Library} from "zkverifyjs";
 
 export function useZkVerify() {
     const { selectedAccount, selectedWallet } = useAccount();
@@ -37,7 +38,8 @@ export function useZkVerify() {
                 proofData: {
                     proof: proofData,
                     publicSignals: publicSignals,
-                    vk: vk
+                    vk: vk,
+                    version: 'V1_0'
                 }
             });
 
