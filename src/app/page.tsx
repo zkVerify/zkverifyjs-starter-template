@@ -52,7 +52,7 @@ export default function Home() {
   }, [error, status, eventData]);
 
   const blockExplorerUrl = blockHash
-      ? `https://testnet-explorer.zkverify.io/v0/block/${blockHash}`
+      ? `https://polkadot.js.org/apps/?rpc=wss://volta-rpc.zkverify.io#/explorer/query/${blockHash}`
       : null;
 
   return (
@@ -106,16 +106,19 @@ export default function Home() {
             {blockExplorerUrl && (
                 <div className={styles.resultLink}>
                   <a href={blockExplorerUrl} target="_blank" rel="noopener noreferrer">
-                    View Transaction on Explorer
+                    View Block On Explorer
                   </a>
                 </div>
             )}
 
             {transactionResult && (
                 <div className={styles.transactionDetails}>
-                  <p>Transaction Hash: {transactionResult.txHash || 'N/A'}</p>
-                  <p>Proof Type: {transactionResult.proofType || 'N/A'}</p>
-                  <p>Attestation ID: {transactionResult.attestationId || 'N/A'}</p>
+                  <p>Block Hash: {transactionResult.blockHash ?? 'N/A'}</p>
+                  <p>Transaction Hash: {transactionResult.txHash ?? 'N/A'}</p>
+                  <p>Proof Type: {transactionResult.proofType ?? 'N/A'}</p>
+                  <p>Domain Id: {transactionResult.domainId ?? 'N/A'}</p>
+                  <p>Aggregation Id: {transactionResult.aggregationId ?? 'N/A'}</p>
+                  <p>Statement: {transactionResult.statement ?? 'N/A'}</p>
                 </div>
             )}
           </div>

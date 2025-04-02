@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useAccount } from '@/context/AccountContext';
+import {VerifyTransactionInfo} from "zkverifyjs";
 
 export function useZkVerify() {
     const { selectedAccount, selectedWallet } = useAccount();
@@ -24,7 +25,7 @@ export function useZkVerify() {
 
             const proofData = proof;
             const { zkVerifySession } = await import('zkverifyjs');
-            const session = await zkVerifySession.start().Testnet().withWallet({
+            const session = await zkVerifySession.start().Volta().withWallet({
                 source: selectedWallet,
                 accountAddress: selectedAccount,
             });
@@ -39,7 +40,8 @@ export function useZkVerify() {
                     publicSignals: publicSignals,
                     vk: vk,
                     version: 'V1_0'
-                }
+                },
+                domainId: 0
             });
 
             events.on('includedInBlock', (data: any) => {
@@ -60,7 +62,7 @@ export function useZkVerify() {
                 throw new Error(`Transaction failed: ${(error as Error).message}`);
             }
 
-            if (transactionInfo && transactionInfo.attestationId) {
+            if (transactionInfo && transactionInfo.aggregationId) {
                 setStatus('verified');
             } else {
                 throw new Error("Your proof isn't correct.");
