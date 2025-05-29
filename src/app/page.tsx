@@ -4,7 +4,7 @@ import { useAccount } from '@/context/AccountContext';
 import ConnectWalletButton, { ConnectWalletButtonHandle } from '../components/ConnectWalletButton';
 import { useZkVerify } from '@/hooks/useZkVerify';
 import styles from './page.module.css';
-import proofData from '../proofs/risc0_v1_0.json';
+import proofData from '../proofs/risc0_v2_0.json';
 import Image from 'next/image';
 
 export default function Home() {

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useAccount } from '@/context/AccountContext';
-import {VerifyTransactionInfo} from "zkverifyjs";
+import { Risc0Version } from "zkverifyjs";
 
 export function useZkVerify() {
     const { selectedAccount, selectedWallet } = useAccount();
@@ -34,12 +34,16 @@ export function useZkVerify() {
             setError(null);
             setTransactionResult(null);
 
-            const { events, transactionResult } = await session.verify().risc0().execute({
+            const { events, transactionResult } = await session
+                .verify()
+                .risc0({
+                    version: Risc0Version.V2_0
+                })
+                .execute({
                 proofData: {
                     proof: proofData,
                     publicSignals: publicSignals,
-                    vk: vk,
-                    version: 'V1_0'
+                    vk: vk
                 },
                 domainId: 0
             });
